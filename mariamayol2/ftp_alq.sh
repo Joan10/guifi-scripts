@@ -1,0 +1,1 @@
+/root/scripts/ftp_alq.sh
