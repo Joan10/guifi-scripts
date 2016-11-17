@@ -66,7 +66,10 @@ if [ "$interactive" == "true" ]; then
 	read
 fi
 gzip $bck_file
-rsync -a  "$bck_file".gz /data/disc1/backups/MV/$mon/
-ln -f -s /data/disc1/backups/MV/$mon/"$bck_file".gz /data/disc1/backups/MV/$mon/latest
+rsync -a  "$bck_file".gz /data/disc1/backups/MV/$mon/backup_"$mon"_`date +%Y-%m-%dT%H_%M_%S`.gz
 
 rm "$bck_file".gz
+
+# Esborram backups antics
+cd /data/disc1/backups/MV/$mon/
+ls -1 -t | tail -n +6 | xargs rm > /dev/null 2>&1
