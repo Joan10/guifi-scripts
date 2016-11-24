@@ -1,0 +1,13 @@
+#!/bin/bash
+
+PPP_REMOTE="$5"
+PPP_IFACE="$1"
+PPP_USER=`last | grep $PPP_IFACE | grep "gone - no logout" | cut -d' ' -f1`
+PPP_NEWIFACE="$PPP_USER"
+
+logger "[PPTP] Renaming $PPP_IFACE to $PPP_NEWIFACE"
+
+#Magia...
+ifconfig $PPP_IFACE down
+ip link set $PPP_IFACE name $PPP_NEWIFACE
+ifconfig $PPP_NEWIFACE up
