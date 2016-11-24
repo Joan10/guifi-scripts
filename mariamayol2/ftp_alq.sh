@@ -1,5 +1,5 @@
 #!/bin/bash
-source ./credencials
+source /root/scripts/credencials
 FILE='today.backup'
 
 cd /data/disc1/backups/Routers
@@ -51,5 +51,9 @@ binary
 get $FILE $FNAME
 quit
 END_SCRIPT
-exit 0
 cd ..
+
+
+fname="/tmp/backup_routers_`date +%Y-%m-%d`.tar.gz"
+tar cvzf $fname /data/disc1/backups/Routers
+ftp-upload -h 10.91.9.72 -u $USER2 --password $PASSWD2 -d /Volume_1/ $fname

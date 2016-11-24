@@ -23,6 +23,9 @@
 #
 ############################
 
+source /root/scripts/credencials
+FTP_HOST=10.91.9.72
+
 mon=$1
 interactive="false"
 if [ "$2" == "i" ]; then
@@ -66,10 +69,11 @@ if [ "$interactive" == "true" ]; then
 	read
 fi
 gzip $bck_file
-rsync -a  "$bck_file".gz /data/disc1/backups/MV/$mon/backup_"$mon"_`date +%Y-%m-%dT%H_%M_%S`.gz
-
+nom_file=backup_"$mon"_`date +%Y-%m-%dT%H_%M_%S`.gz
+rsync -a  "$bck_file".gz /data/disc1/backups/MV/$mon/$nom_file
 rm "$bck_file".gz
 
 # Esborram backups antics
 cd /data/disc1/backups/MV/$mon/
+ftp-upload -h $FTP_HOST -u ftpuser --password $PASSWD -d /Volume_1/ $nom_file
 ls -1 -t | tail -n +6 | xargs rm > /dev/null 2>&1
