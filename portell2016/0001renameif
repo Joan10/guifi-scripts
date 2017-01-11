@@ -7,6 +7,18 @@ PPP_NEWIFACE="$PPP_USER"
 
 logger "[PPTP] Renaming $PPP_IFACE to $PPP_NEWIFACE"
 
+let n=1
+while [ $n -le 7 ] && [ ! -z "$i" ]  ; do
+# esperam a que desaparegui la vella interficie per evitar problemes
+	sleep 20
+	let n=n+1
+        # tornam a mirar
+        i=`/sbin/ifconfig | grep $PPP_NEWIFACE`
+done;
+if [ $n -eq 7 ]; then
+	exit;
+fi
+
 #Magia...
 ifconfig $PPP_IFACE down
 ip link set $PPP_IFACE name $PPP_NEWIFACE
